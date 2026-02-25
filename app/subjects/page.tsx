@@ -1,10 +1,14 @@
-import { SemesterSubjects } from "@/components/subjects/semester-subjects"
-
-export default function SubjectPage() {
+import { Wrapper } from "@/components/certificates/wrapper"
+import { CertType } from "@/models/cert-type-model"
+import { connectMongoose } from "@/utils/mongoose-client"
+export default async function CertificatesPage() {
+  await connectMongoose()
+  const certTypes = await CertType.find().lean()
   return (
-    <div className="grid grid-flow-row gap-4">
-      <h1 className="font-bold text-xl">Subjects of semester</h1>
-      <SemesterSubjects />
-    </div>
+    <main className="p-8">
+      <h1 className="text-2xl font-bold mb-6">Certificates Management</h1>
+      {}
+      <Wrapper certTypes={JSON.parse(JSON.stringify(certTypes))} />
+    </main>
   )
 }
