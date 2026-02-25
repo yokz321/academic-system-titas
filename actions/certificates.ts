@@ -26,7 +26,7 @@ export async function createCertificates(
       for (const key of Object.keys(props) as Array<keyof typeof props>) {
         const field = props[key]
         if (field?.errors?.length) {
-          fieldErrors[key] = field.errors
+          fieldErrors[key as string] = field.errors
         }
       }
     }
