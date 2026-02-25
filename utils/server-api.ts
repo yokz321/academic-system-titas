@@ -23,3 +23,6 @@ export const postApi = async (url: string, body: object, method = "POST") => {
 export const putApi = async (url: string, body: object) => {
   await postApi(url, body, "PUT")
 }
+export const deleteApi = async (url: string, id: string) => {
+  await postApi(`${url}/${id}`, { id }, "DELETE")
+}

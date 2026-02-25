@@ -36,6 +36,7 @@ export function Wrapper(props: IProps) {
         certTypes={certTypes}
         certificates={certificates}
         setEditCert={setEditCert}
+        getCertFromApi={getCertFromApi}
       />
     </div>
   )
