@@ -1,7 +1,6 @@
 import { Certificate, ICertificate } from "@/models/certificate-model"
 import { connectMongoose } from "@/utils/mongoose-client"
 import { Types } from "mongoose"
-import { SourceTextModule } from "node:vm"
 export class CertificateService {
   async getCertificates(): Promise<ICertificate[]> {
     await connectMongoose()
