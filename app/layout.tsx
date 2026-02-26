@@ -17,15 +17,13 @@ export default async function RootLayout({
 }>) {
   return (
     <html lang="lt">
-      <body className="container mx-auto max-w-screen-xl">
-        <StoreProvider>
-          {" "}
-          {}
+      <StoreProvider>
+        <body className="container mx-auto max-w-screen-xl">
           <Header />
           {children}
           <Footer />
-        </StoreProvider>
-      </body>
+        </body>
+      </StoreProvider>
     </html>
   )
 }

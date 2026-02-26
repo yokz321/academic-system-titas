@@ -9,7 +9,10 @@ import { useActionState, useEffect, useRef } from "react"
 import { createCertificates } from "@/actions/certificates"
 import { ICertType } from "@/models/cert-type-model"
 import { ICertificate } from "@/models/certificate-model"
-import { useShallow, useStore } from "@/store/use-store"
+import {
+  useBoundStore,
+  useShallow,
+} from "@/components/providers/store-provider"
 
 const initialState: IState = {
   message: "",
@@ -28,7 +31,7 @@ export function FormFields(props: IProps) {
   const ref = useRef<HTMLFormElement>(null)
   const { certTypes, getCertFromApi, editCert, setEditCert } = props
 
-  const { setMessage } = useStore(
+  const { setMessage } = useBoundStore(
     useShallow((state) => ({
       setMessage: state.setMessage,
     }))
