@@ -1,25 +1,27 @@
 "use client"
-import { INav } from "@/types/nav-t"
+
+import { useBoundStore } from "@/components/providers/store-provider"
 import { AcademicCapIcon, Bars4Icon } from "@heroicons/react/24/outline"
 import Link from "next/link"
 import { useState } from "react"
 
-type IProps = { menu: INav[] }
-
-const HOST = "http://localhost:3000"
-
-export function Nav(props: IProps) {
+export function Nav() {
   const [isVisible, setIsVisible] = useState<boolean>(false)
-  const { menu } = props
+
+  const menu = useBoundStore((state) => state.menu)
+
   return (
     <nav className="bg-white border-gray-200">
       <div className="max-w-screen-xl flex flex-wrap items-center gap-x-4 justify-between mx-auto p-4">
-        <Link href={HOST} className="flex items-center space-x-3">
+        {}
+        <Link href="/" className="flex items-center space-x-3">
           <div className="flex gap-x-2">
             <AcademicCapIcon className="h-8 w-8 stroke-orange-700" />
             <div className="text-2xl text-orange-700 font-bold">AAS</div>
           </div>
         </Link>
+
+        {}
         <button
           onClick={() => setIsVisible(!isVisible)}
           type="button"
@@ -28,6 +30,8 @@ export function Nav(props: IProps) {
           <span className="sr-only">Open menu</span>
           <Bars4Icon className="h-7 w-7 stroke-gray-800" />
         </button>
+
+        {}
         <div
           className={`w-full md:block md:w-auto ${isVisible ? "" : "hidden"}`}
         >

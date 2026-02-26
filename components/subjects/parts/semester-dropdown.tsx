@@ -1,4 +1,5 @@
 import { ISemester } from "@/types/semester-t"
+import { getApi } from "@/utils/server-api"
 import { useEffect, useState } from "react"
 
 type IProps = { setSemesterId: (s: number) => void }

@@ -1,4 +1,5 @@
 import { ISubject } from "@/types/subject-t"
+import { getApi } from "@/utils/server-api"
 import { useEffect, useState } from "react"
 
 type IProps = { semesterId: number }
@@ -12,9 +13,9 @@ export function SubjectList(props: IProps) {
       setSubjects([])
       return
     }
-    fetch(`/api/subjects?semesterId=${semesterId}`)
-      .then((res) => res.json())
-      .then((r) => setSubjects(r))
+    getApi<ISubject[]>(`/api/subjects?semesterId=${semesterId}`).then((r) =>
+      setSubjects(r ?? [])
+    )
   }, [semesterId])
 
   return (
