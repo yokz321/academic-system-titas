@@ -1,22 +1,22 @@
 "use server"
 
 import { IState } from "@/types/shared-t"
-import { signUpSchema } from "@/utils/form/login-validator"
+import { signInSchema } from "@/utils/form/login-validator"
 import { auth } from "@/utils/auth"
 import { headers } from "next/headers"
+import { redirect } from "next/navigation"
 import z from "zod"
 
-export async function signUpAction(
+export async function signInAction(
   prevState: IState,
   formData: FormData
 ): Promise<IState> {
   const rawFormData = {
-    username: formData.get("username"),
     email: formData.get("email"),
     password: formData.get("password"),
   }
 
-  const parse = signUpSchema.safeParse(rawFormData)
+  const parse = signInSchema.safeParse(rawFormData)
   if (!parse.success) {
     const flat = parse.error.flatten()
     return {
@@ -26,50 +26,46 @@ export async function signUpAction(
     }
   }
 
-  const { email, password, username } = parse.data
+  const { email, password } = parse.data
 
   try {
-    const response = await auth.api.signUpEmail({
+    await auth.api.signInEmail({
       body: {
         email,
         password,
-        name: username,
       },
       headers: await headers(),
     })
-
-    if (!response) {
-      return {
-        errors: { email: ["Failed to create user."] },
-        message: "Failed to sign up",
-        isSaved: false,
-      }
-    }
-
-    return {
-      message: "User successfully created",
-      isSaved: true,
-    }
   } catch (error) {
-    console.error("Sign up error:", error)
+    console.error("Sign in error:", error)
     const errorMessage =
       error instanceof Error ? error.message : "Unknown error"
 
     if (
-      errorMessage.includes("already exists") ||
-      errorMessage.includes("email")
+      errorMessage.includes("Invalid email") ||
+      errorMessage.includes("not found")
     ) {
       return {
-        errors: { email: ["This email is already registered"] },
-        message: "Failed to sign up",
+        errors: { email: ["User not found."] },
+        message: "Failed to sign in",
+        isSaved: false,
+      }
+    }
+
+    if (errorMessage.includes("password")) {
+      return {
+        errors: { password: ["Incorrect password."] },
+        message: "Failed to sign in",
         isSaved: false,
       }
     }
 
     return {
       errors: { general: [errorMessage] },
-      message: errorMessage || "Failed to sign up",
+      message: "Failed to sign in",
       isSaved: false,
     }
   }
+
+  redirect("/")
 }

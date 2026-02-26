@@ -2,15 +2,17 @@ import { betterAuth } from "better-auth"
 import { mongodbAdapter } from "better-auth/adapters/mongodb"
 import { nextCookies } from "better-auth/next-js"
 import mongoose from "mongoose"
+import { MongoClient } from "mongodb"
 import { connectMongoose } from "@/utils/mongoose-client"
 
 await connectMongoose()
-const mongoClient = mongoose.connection.getClient()
-const db = mongoClient.db(process.env.MONGO_DB!)
+
+const client = new MongoClient(process.env.MONGO_URI!)
+const db = client.db(process.env.MONGO_DB!)
 
 export const auth = betterAuth({
-  database: mongodbAdapter(db as any, {
-    client: mongoClient as any,
+  database: mongodbAdapter(db, {
+    client: client,
     usePlural: true,
   }),
   emailAndPassword: {

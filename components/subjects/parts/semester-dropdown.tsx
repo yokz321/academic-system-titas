@@ -9,9 +9,8 @@ export function SemesterDropdown(props: IProps) {
   const [semesters, setSemesters] = useState<ISemester[]>([])
 
   useEffect(() => {
-    fetch(`/api/semesters`)
-      .then((r) => r.json())
-      .then((r) => setSemesters(r))
+    getApi(`/api/semesters`)
+      .then((data) => setSemesters(data as ISemester[]))
       .catch((e) => console.error(e))
   }, [])
 
